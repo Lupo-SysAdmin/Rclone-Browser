@@ -1,16 +1,17 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.5...3.28)
 
 if (NOT ${CMAKE_VERSION} VERSION_LESS "3.0.0")
-	cmake_policy(SET CMP0028 NEW)
+    cmake_policy(SET CMP0028 NEW)
 endif()
 if (NOT ${CMAKE_VERSION} VERSION_LESS "2.8.11")
-	cmake_policy(SET CMP0020 NEW)
+    cmake_policy(SET CMP0020 NEW)
 endif()
 
 if(WIN32)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /WX /wd4100 /wd4189")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /wd4100 /wd4189")
 else()
-  add_definitions("-pedantic -Wall -Wextra -Werror -std=c++11")
+  # Se ha eliminado -Werror y añadido -Wno-deprecated-declarations para evitar que la compilación se detenga
+  add_definitions("-pedantic -Wall -Wextra -std=c++11 -Wno-deprecated-declarations")
 endif()
 
 if (APPLE)

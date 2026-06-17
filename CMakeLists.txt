@@ -5,5 +5,12 @@ if(POLICY CMP0048)
   cmake_policy(SET CMP0048 NEW)
 endif()
 
-# Aquí iría el resto de la configuración original del proyecto
-# (Si el archivo original era muy largo, solo asegúrate de reemplazar las primeras 3-5 líneas)
+# Buscamos Qt5 obligatoriamente
+find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
+
+# Conectamos con la carpeta src
+add_subdirectory(src)
+# Instrucciones de instalación para el usuario final
+install(TARGETS rclone-browser RUNTIME DESTINATION bin)
+install(FILES "assets/rclone-browser.svg" DESTINATION "share/icons/hicolor/scalable/apps")
+install(FILES "assets/rclone-browser.desktop" DESTINATION "share/applications")
