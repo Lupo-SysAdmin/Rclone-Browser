@@ -2,7 +2,7 @@
 
 Una interfaz gráfica nativa y fácil de usar para [Rclone](https://github.com/Lupo-SysAdmin/Rclone-Browser).
 
-## Instalación Automática
+## Instalación Automática en tu menu de aplicacones.
 Para compilar e instalar la aplicación en tu sistema Linux, sigue estos pasos:
 
 1. **Clonar el repositorio:**
