@@ -16,3 +16,6 @@ Para compilar e instalar la aplicación en tu sistema Linux, sigue estos pasos:
 
 4. **Ejecutar el instalador:**
    ./install.sh
+
+5. **Actualizar el menu de aplicaciones:**
+  sudo update-desktop-database
