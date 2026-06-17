@@ -19,11 +19,13 @@ make -j$(nproc) || { echo "Error en la compilación"; exit 1; }
 echo "Instalando binarios en /opt/rclone-browser/..."
 sudo mkdir -p /opt/rclone-browser/
 
-# Copiar el binario compilado desde la carpeta build
+# Copiar el binario compilado (buscando en ambos lugares probables)
 if [ -f "rclone-browser" ]; then
     sudo cp rclone-browser /opt/rclone-browser/rclone-browser
+elif [ -f "src/rclone-browser" ]; then
+    sudo cp src/rclone-browser /opt/rclone-browser/rclone-browser
 else
-    echo "Error: No se encontró el ejecutable 'rclone-browser' en build/"
+    echo "Error: No se encontró el ejecutable 'rclone-browser' ni en build/ ni en build/src/"
     exit 1
 fi
 
