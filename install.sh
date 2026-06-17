@@ -1,32 +1,23 @@
 #!/bin/bash
-
 echo "--- Iniciando instalación de Rclone Browser ---"
 
-# 1. Instalar dependencias
-sudo apt update && sudo apt install -y cmake g++ qtbase5-dev qt5-qmake
+# Verificar dependencias
+sudo apt update && sudo apt install -y cmake g++ qtbase5-dev qt5-qmake || exit 1
 
-# 2. Preparar el directorio de build
+# Compilación segura
+echo "Compilando..."
 mkdir -p build
-# Borramos el contenido de build, pero mantenemos la carpeta
-rm -rf build/*
+cd build || exit 1
+rm -rf CMakeCache.txt CMakeFiles/
+cmake .. -DCMAKE_CXX_FLAGS="-Wno-error=deprecated-declarations" || { echo "Error en CMake"; exit 1; }
+make -j$(nproc) || { echo "Error en la compilación"; exit 1; }
 
-# 3. Compilar
-echo "Compilando... esto puede tardar unos minutos."
-# Cambiamos '..' por '.' para que busque en la carpeta actual
-cmake -S . -B build -DCMAKE_CXX_FLAGS="-Wno-error=deprecated-declarations"
-cd build
-make -j$(nproc)
-
-# 4. Instalar en el sistema
+# Instalación
 echo "Instalando en /opt/..."
 sudo mkdir -p /opt/rclone-browser/
-# Buscamos el binario donde realmente se genera (que en este proyecto suele ser en build/src o build/build)
-# Si 'make' lo dejó en build/src o build, lo copiaremos
-find . -name "rclone-browser" -type f -exec sudo cp {} /opt/rclone-browser/rclone-browser \;
-sudo cp ../assets/rclone-browser-256x256.png /opt/rclone-browser/rclone_logo.png
+sudo cp rclone-browser /opt/rclone-browser/rclone-browser
 
-# 5. Crear lanzador .desktop
-echo "Creando acceso directo..."
+# Crear lanzador
 cat <<EOF | sudo tee /usr/share/applications/rclone-browser.desktop
 [Desktop Entry]
 Name=Rclone Browser
@@ -38,6 +29,5 @@ Type=Application
 Categories=Utility;FileTools;
 EOF
 
-# 6. Refrescar menú
 sudo update-desktop-database
-echo "--- ¡Instalación exitosa! Ya puedes buscar 'Rclone Browser' en tu menú ---"
+echo "--- ¡Instalación exitosa! ---"
